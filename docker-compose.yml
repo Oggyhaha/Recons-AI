@@ -1,14 +1,36 @@
 version: '3.8'
 
 services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: reconos_postgres
+    environment:
+      POSTGRES_USER: reconos
+      POSTGRES_PASSWORD: reconos_password
+      POSTGRES_DB: reconos
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U reconos -d reconos"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
   backend:
     build:
       context: .
       dockerfile: Dockerfile.backend
+    container_name: reconos_backend
     ports:
       - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
     environment:
-      - DATABASE_URL=sqlite+aiosqlite:///./reconos.db
+      - DATABASE_URL=postgresql+asyncpg://reconos:reconos_password@postgres:5432/reconos
       - DEFAULT_CURRENCY=INR
     volumes:
       - ./backend:/app
@@ -18,10 +40,15 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.frontend
+    container_name: reconos_frontend
     ports:
       - "3000:3000"
     depends_on:
       - backend
     environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
       - NODE_ENV=production
     restart: unless-stopped
+
+volumes:
+  pgdata:

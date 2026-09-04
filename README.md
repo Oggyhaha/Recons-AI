@@ -149,7 +149,9 @@ ReconOS is an **enterprise autonomous finance control plane** built on a hybrid 
 | Layer | Technology | Purpose |
 | :--- | :--- | :--- |
 | **Backend Framework** | FastAPI (Python 3.11+) | Async, high-throughput REST API |
-| **Database & ORM** | SQLAlchemy 2.0 (Async) + SQLite / PostgreSQL | Relational financial data store |
+| **Primary Database & Vector Engine** | PostgreSQL 16 + **`pgvector`** (`pgvector/pgvector:pg16`) | ACID relational ledger + vector semantic search |
+| **Database Drivers & ORM** | SQLAlchemy 2.0 (Async) + `asyncpg` / `aiosqlite` | High-concurrency async connection pooling |
+| **Vector Embeddings & RAG** | 384-Dim Semantic Embeddings + Cosine Distance (`<=>`) | Regulatory policy retrieval & historical memory |
 | **Validation & Contracts** | Pydantic v2 | Strict minor-unit schema contracts |
 | **Frontend Framework** | Next.js 14 (App Router) + React 18 | High-performance enterprise UI |
 | **Styling & Design System** | Tailwind CSS + Vanilla CSS | Razorpay enterprise design tokens |
@@ -214,14 +216,15 @@ Open **`http://localhost:3000`** in your browser.
 
 ---
 
-### Option B: Docker Compose Setup
+### Option B: Docker Compose Setup (Includes PostgreSQL + pgvector)
 
-Run both services with a single command:
+Run all three services (PostgreSQL 16 with pgvector, FastAPI backend, and Next.js frontend) with a single command:
 ```bash
 docker-compose up --build
 ```
-- Frontend: `http://localhost:3000`
-- Backend: `http://localhost:8000`
+- **PostgreSQL + pgvector**: `localhost:5432` (`reconos` database)
+- **FastAPI Backend**: `http://localhost:8000` (Swagger docs: `http://localhost:8000/docs`)
+- **Next.js Enterprise Web UI**: `http://localhost:3000`
 
 ---
 
