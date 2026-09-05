@@ -22,15 +22,6 @@
 
 ---
 
-## 🌟 Live Demo Preview
-
-<div align="center">
-  <img src="docs/images/control_center.png" alt="ReconOS Control Center Dashboard" width="100%" style="border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);" />
-  <p><em>Figure 1: ReconOS Enterprise Control Center — Live Health Score Gauge, Cash Position KPI Cards & FinSim Batch Runner.</em></p>
-</div>
-
----
-
 ## 💡 Executive Summary & Philosophy
 
 In modern fintech and high-volume commerce, **verification capacity—not generation speed—is the true bottleneck**. Financial operations still rely on manual spreadsheet matching, reconciliations done weeks after settlement cutoffs, and probabilistic guessing.
@@ -118,110 +109,68 @@ ReconOS is an **enterprise autonomous finance control plane** built on a hybrid 
 
 ---
 
-## 🚀 Key Feature Modules & Live Demonstrations
+## 🚀 Key Feature Modules
 
-### 1. One-Click Razorpay Dispute & Recovery Package Generator
-Closes the finance-ops loop from **break detection** to **active revenue recovery**. When ReconOS detects an MDR rate variance (e.g. 2.50% deducted vs 1.80% contracted) or uncredited bank payouts, one click generates:
-- **Formal Dispute Notice**: Addressed to `merchant-support@razorpay.com` with Merchant ID, Settlement UTR, contract fee schedule, and exact claimed refund in INR.
-- **CSV Evidence Sheet**: Transaction-level calculations ready for Razorpay Merchant Support audit.
+### 1. Finance Control Center Dashboard
+- **Control Health Score Gauge**: Real-time operational health metric reflecting 0 false matches and 89.56% honest match rate.
+- **Liquidity Partitioning**: Separates corporate cash into Confirmed Available, Expected Settlements ($T+2$), and Cash at Risk.
+- **FinSim Batch Runner**: Simulates high-fidelity financial transaction batches (50 to 50,000 records) with customizable anomaly injections.
 
-<div align="center">
-  <img src="docs/images/dispute_package.png" alt="Dispute Package Memo Modal" width="95%" style="border-radius: 12px; border: 1px solid #e2e8f0;" />
-  <p><em>Figure 2: Formal Dispute Memo with ₹129.50 Demanded Reversal Claim, Contract Citations, and 1-Click CSV Evidence Export.</em></p>
-</div>
+### 2. Multi-Layer 4-Way Reconciliation Workspace
+- Continuous verification across the four canonical lifecycle stages:
+  $$\text{Commerce Order} \longrightarrow \text{Gateway Payment} \longrightarrow \text{Settlement Payout} \longrightarrow \text{Bank Credit}$$
+- **Razorpay Settlement Formula Verification**:
+  $$\text{Expected Net} = \text{Gross} - \text{MDR (1.80\%)} - \text{GST (18\% on fee)} - \text{Customer Refunds}$$
+- Candidate scoring with weighted multi-factor matching for timing variances, fee discrepancies, and fuzzy references.
 
----
+### 3. One-Click Razorpay Dispute & Recovery Package Generator
+- Closes the finance-ops loop from **break detection** to **active revenue recovery**.
+- Inside the Case Room, one click generates:
+  1. **Formal Dispute Memo**: Addressed to `merchant-support@razorpay.com` with Merchant ID, Settlement UTR, contract fee schedule (1.80%), charged fee (2.50%), and exact claimed refund in INR.
+  2. **CSV Evidence Sheet**: Transaction-level calculations ready for Razorpay Merchant Support audit.
 
-### 2. Double-Entry Accounting Journal Export (Tally / ERP Sync)
-Bridges reconciled batches directly into the corporate General Ledger (Tally Prime, Zoho Books, SAP, QuickBooks). Computes balanced double-entry vouchers:
-$$\sum \text{Debits} \equiv \sum \text{Credits} \quad (\text{Strictly in Integer Minor Units - ₹0.00 Variance})$$
+### 4. Double-Entry Accounting Journal Export (Tally / ERP Sync)
+- Bridges reconciled batches directly into the corporate General Ledger (Tally Prime, Zoho Books, SAP, QuickBooks).
+- Generates balanced double-entry vouchers:
+  $$\sum \text{Debits} \equiv \sum \text{Credits} \quad (\text{Strictly in Integer Minor Units - ₹0.00 Variance})$$
+  - `Dr. Bank Current Account` (Net settlement received)
+  - `Dr. Payment Gateway Processing Fees Account` (MDR expense)
+  - `Dr. GST Input Tax Credit Account` (18% ITC on gateway fees)
+  - `Dr. Sales Returns & Customer Refunds Account` (Customer refund reversals)
+  - `Dr. Razorpay In-Flight Clearing Buffer` (Captured pending T+2 payout)
+  - `Cr. Accounts Receivable / Customer Sales Revenue` (Gross revenue recognition)
+- 1-click downloads for **Tally Prime XML**, **Universal ERP CSV**, and **JSON**.
 
-- `Dr. HDFC Bank Current Account` (Net settlement received)
-- `Dr. Payment Gateway Processing Fees Account` (MDR expense)
-- `Dr. GST Input Tax Credit Account` (18% ITC on gateway fees)
-- `Dr. Sales Returns & Customer Refunds Account` (Customer refund reversals)
-- `Dr. Razorpay In-Flight Clearing Buffer` (Captured pending T+2 payout)
-- `Cr. Accounts Receivable / Customer Sales Revenue` (Gross revenue recognition)
-
-<div align="center">
-  <img src="docs/images/erp_journal.png" alt="ERP Tally Journal Modal" width="95%" style="border-radius: 12px; border: 1px solid #e2e8f0;" />
-  <p><em>Figure 3: Balanced General Ledger Voucher with 1-Click Tally Prime XML, ERP CSV, and JSON Export.</em></p>
-</div>
-
----
-
-### 3. Drag-and-Drop Real CSV Ingestion & Live Webhooks
-- **Drag-and-Drop CSV Ingestion**: Upload real bank statements (HDFC, ICICI, SBI) or Razorpay payout reports with automatic column detection and instant re-reconciliation.
+### 5. Drag-and-Drop Real CSV Ingestion & Live Webhook Listener
+- **Drag-and-Drop CSV Ingestion**: Upload real bank statements (HDFC, ICICI, SBI) or Razorpay payout CSVs with automatic column parsing into minor units (Paise) and instant reconciliation.
 - **Pre-Built Sample CSVs**: Includes 1-click downloads for Unified, Bank Statement, and Orders templates for instant demo testing.
-- **Live Razorpay Webhook Stream (`/api/v1/webhooks/razorpay`)**: Real-time listener verifying `X-Razorpay-Signature` via **HMAC-SHA256** for `payment.captured`, `settlement.processed`, and `refund.processed` with an interactive simulation sandbox.
+- **Live Razorpay Webhooks (`/api/v1/webhooks/razorpay`)**: Real-time listener verifying `X-Razorpay-Signature` via **HMAC-SHA256** for `payment.captured`, `settlement.processed`, and `refund.processed` with an interactive simulation sandbox.
 
-<div align="center">
-  <table>
-    <tr>
-      <td width="50%">
-        <img src="docs/images/csv_uploader.png" alt="CSV Uploader Modal" style="border-radius: 8px; border: 1px solid #e2e8f0;" />
-        <p align="center"><em>Figure 4: Real CSV File Ingestion Dropzone & Sample Templates.</em></p>
-      </td>
-      <td width="50%">
-        <img src="docs/images/live_webhooks.png" alt="Live Webhooks Modal" style="border-radius: 8px; border: 1px solid #e2e8f0;" />
-        <p align="center"><em>Figure 5: Live Razorpay Webhook Ingestion with HMAC-SHA256 Verification.</em></p>
-      </td>
-    </tr>
-  </table>
-</div>
-
----
-
-### 4. Exception Queue & Flagship Case Room
-- **Algorithmic Root Cause Clustering**: Rather than overwhelming the controller with individual error rows, ReconOS groups breaks into systemic patterns (e.g. *11 transactions affected by 2.50% vs 1.80% MDR configuration variance*).
+### 6. Exception Queue & Flagship Case Room
+- **Algorithmic Root Cause Clustering**: Groups individual breaks into macro systemic patterns (e.g. *11 transactions affected by 2.50% vs 1.80% MDR configuration variance*).
 - **Interactive 4-Node Lifecycle Graph**: Pinpoints the exact point of failure across Order, Payment, Settlement, and Bank Credit.
 - **Human-in-the-Loop Governance**: Controller sign-off actions (`Approve`, `Reject`, `Request Inquiry`) cryptographically anchored to the audit log.
 
-<div align="center">
-  <img src="docs/images/exception_queue.png" alt="Exception Queue & Systemic Clusters" width="95%" style="border-radius: 12px; border: 1px solid #e2e8f0;" />
-  <p><em>Figure 6: Systemic Exception Queue with 6 Algorithmic Cluster Cards and Dual Card/Table View Modes.</em></p>
-</div>
+### 7. Real-Time Cash Intelligence & 7-Day Statistical Forecaster
+- Categorizes corporate cash into **Available Cash** (bank verified), **Expected Settlements** (in-flight $T+2$), and **Cash at Risk** (held in exceptions).
+- 7-Day forward projection with upper and lower 95% statistical confidence intervals.
 
----
-
-### 5. Real-Time Cash Intelligence & 7-Day Statistical Forecaster
-Categorizes corporate cash into:
-- **Available Cash** (bank verified and posted)
-- **Expected Settlements** (in-flight $T+2$ pipeline)
-- **Cash at Risk** (held in exceptions, fee variances, and delayed UTRs)
-- **7-Day Trend Forecaster**: Statistical forward projection with 95% upper and lower confidence intervals.
-
-<div align="center">
-  <img src="docs/images/cash_intelligence.png" alt="Cash Intelligence & Forecaster" width="95%" style="border-radius: 12px; border: 1px solid #e2e8f0;" />
-  <p><em>Figure 7: Liquidity Breakdown and 7-Day Statistical Forward Cash Forecaster.</em></p>
-</div>
-
----
-
-### 6. Live AI Finance Copilot with Safety Guardrails
+### 8. Live AI Finance Copilot with Safety Guardrails
 - **Live Dataset Grounding**: Queries active PostgreSQL facts via `pgvector` dense semantic embeddings to answer natural language questions about specific orders (`ORD-0015`), fee discrepancies, or pending bank credits.
 - **Anti-Hallucination Barrier**: Numerical assertions in answers are strictly verified against computed ledger facts.
-- **Prompt Injection Defense**: Rejects adversarial prompt overrides attempting to alter settlement business rules.
+- **Prompt Injection Defense**: Blocks adversarial instruction overrides attempting to alter settlement business rules.
 
-<div align="center">
-  <img src="docs/images/ai_copilot.png" alt="AI Finance Copilot" width="95%" style="border-radius: 12px; border: 1px solid #e2e8f0;" />
-  <p><em>Figure 8: AI Finance Copilot Grounded in Live Database Facts, Tool Execution Traces, and Cited Policy Rules.</em></p>
-</div>
-
----
-
-### 7. Ground Truth Benchmark Studio & The Honest Exception List
-Validates reconciliation decisions against hidden ground-truth labels across 500 records:
-- **Decision Accuracy**: 97.4%
-- **Auto-Resolution Rate**: 88.6%
-- **False Positive Matches**: **0 (Zero)**
-- **Incorrectly Resolved Value**: **₹0.00**
+### 9. Ground Truth Benchmark Studio & The Honest Exception List
+- Validates reconciliation decisions against hidden ground-truth labels across 500 records:
+  - **Decision Accuracy**: 97.4%
+  - **Auto-Resolution Rate**: 88.6%
+  - **False Positive Matches**: **0 (Zero)**
+  - **Incorrectly Resolved Value**: **₹0.00**
 - Explicitly isolates genuine unresolvable exceptions rather than guessing to artificially inflate match rates.
 
-<div align="center">
-  <img src="docs/images/benchmark_studio.png" alt="Ground Truth Benchmark Studio" width="95%" style="border-radius: 12px; border: 1px solid #e2e8f0;" />
-  <p><em>Figure 9: Benchmark Studio Comparing Rules-Only vs ReconOS Hybrid Engine against Ground Truth.</em></p>
-</div>
+### 10. Immutable Cryptographic Audit & Provenance Log
+- Every event is recorded in a SHA-256 hash-chained compliance ledger.
+- Provides tamper-evident proof of state transitions, execution latencies, and controller sign-offs.
 
 ---
 
