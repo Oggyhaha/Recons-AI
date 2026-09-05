@@ -208,7 +208,7 @@ def process_webhook_event(event_name: str, payload: Dict[str, Any], signature_ve
 @router.post("/razorpay/simulate")
 async def simulate_razorpay_webhook(req: WebhookSimulationRequest):
     """
-    Simulation sandbox for hackathon demos.
+    Simulation sandbox for staging verification and integration testing.
     Generates a synthetically signed live Razorpay event with valid HMAC-SHA256 and feeds it to the pipeline.
     """
     amount_paise = int(round(req.amount_inr * 100))

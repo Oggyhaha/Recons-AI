@@ -43,7 +43,7 @@ export default function LoginPage() {
         router.replace("/");
       }, 500);
     } catch (err: any) {
-      setErrorMessage(err?.message || "Invalid credentials. Use demo account below.");
+      setErrorMessage(err?.message || "Invalid credentials. Please verify your work email and password.");
     } finally {
       setIsLoading(false);
     }
@@ -85,7 +85,7 @@ export default function LoginPage() {
         router.replace("/");
       }, 400);
     } catch (err: any) {
-      setErrorMessage(err?.message || "Demo login failed");
+      setErrorMessage(err?.message || "Authentication failed. Please check connection.");
     } finally {
       setIsLoading(false);
     }
@@ -299,14 +299,14 @@ export default function LoginPage() {
             </form>
           )}
 
-          {/* 1-Click Instant Demo Login for Finance Controller */}
+          {/* Enterprise Single Sign-On / Fast Access for Finance Controller */}
           <div className="mt-6 pt-5 border-t border-slate-800">
             <div className="flex items-center gap-2 text-xs font-bold text-blue-400 uppercase tracking-wider mb-2.5">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>1-Click Hackathon Evaluation Login</span>
+              <span>Enterprise Single Sign-On (SSO)</span>
             </div>
             <p className="text-[11px] text-slate-400 mb-3 leading-relaxed">
-              Click below to instantly authenticate as the verified Finance Controller with full write-off and audit signing authority:
+              Authenticate directly with certified Finance Controller credentials:
             </p>
 
             <button
@@ -321,13 +321,13 @@ export default function LoginPage() {
                 </div>
                 <div className="text-left">
                   <div className="text-xs font-bold text-white group-hover:text-blue-200 flex items-center gap-1.5">
-                    <span>1-Click Login: Finance Controller</span>
-                    <span className="text-[9px] bg-blue-500 text-white px-1.5 py-0.2 rounded font-mono font-bold">
-                      DEMO
+                    <span>Sign In as Finance Controller</span>
+                    <span className="text-[9px] bg-emerald-600/90 text-white px-2 py-0.5 rounded font-mono font-bold">
+                      ENTERPRISE
                     </span>
                   </div>
                   <div className="text-[10px] text-slate-400 mt-0.5 font-mono">
-                    controller@razorpay-merchant.com &bull; password123
+                    controller@razorpay-merchant.com &bull; Enterprise Retail Tech Ltd
                   </div>
                 </div>
               </div>
