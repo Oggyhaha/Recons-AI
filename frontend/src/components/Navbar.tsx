@@ -106,8 +106,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onBatchGenerated }) => {
             </button>
 
             <Link href="/" className="flex items-center gap-2 sm:gap-2.5 group">
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#0C2340] flex items-center justify-center text-white shadow-sm ring-1 ring-slate-900/10 transition-transform group-hover:scale-105 shrink-0">
-                <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-[#3395FF]" />
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white border border-slate-200/90 p-0.5 flex items-center justify-center shadow-xs ring-1 ring-slate-900/5 transition-transform group-hover:scale-105 shrink-0 overflow-hidden">
+                <img
+                  src="/logo.png"
+                  alt="ReconOS Logo"
+                  className="w-full h-full object-contain rounded-lg"
+                />
               </div>
               <div>
                 <div className="flex items-center gap-1.5 sm:gap-2">
@@ -237,8 +241,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onBatchGenerated }) => {
                   onClick={() => setMobileDrawerOpen(false)}
                   className="flex items-center gap-2"
                 >
-                  <div className="w-8 h-8 rounded-xl bg-[#0C2340] flex items-center justify-center text-white shadow-sm">
-                    <ShieldCheck className="w-4 h-4 text-[#3395FF]" />
+                  <div className="w-8 h-8 rounded-xl bg-white border border-slate-200/90 p-0.5 flex items-center justify-center shadow-xs overflow-hidden shrink-0">
+                    <img
+                      src="/logo.png"
+                      alt="ReconOS Logo"
+                      className="w-full h-full object-contain rounded-lg"
+                    />
                   </div>
                   <div>
                     <div className="flex items-center gap-1.5">

@@ -98,8 +98,12 @@ export default function LoginPage() {
 
       <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10 text-center mb-6">
         <div className="inline-flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-blue-500/25">
-            <ShieldCheck className="w-7 h-7 text-white" />
+          <div className="w-14 h-14 rounded-2xl bg-white/95 border border-white/20 p-1 flex items-center justify-center shadow-xl shadow-blue-500/20 backdrop-blur-md shrink-0">
+            <img
+              src="/logo.png"
+              alt="ReconOS Logo"
+              className="w-full h-full object-contain rounded-xl"
+            />
           </div>
           <div className="text-left">
             <span className="text-2xl font-black tracking-tight text-white flex items-center gap-1.5">

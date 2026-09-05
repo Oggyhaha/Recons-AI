@@ -6,6 +6,11 @@ import { AppShell } from "@/components/AppShell";
 export const metadata: Metadata = {
   title: "ReconOS — Enterprise AI Finance Control Plane",
   description: "Autonomous financial reconciliation, exception intelligence, and real-time cash control powered by Razorpay settlement engine.",
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({

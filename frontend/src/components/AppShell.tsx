@@ -33,8 +33,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-[#07101E] flex flex-col items-center justify-center text-white space-y-4">
-        <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-blue-500/20 animate-pulse">
-          <ShieldCheck className="w-7 h-7 text-white" />
+        <div className="w-14 h-14 rounded-2xl bg-white/95 border border-white/20 p-1 flex items-center justify-center shadow-xl shadow-blue-500/20 animate-pulse">
+          <img
+            src="/logo.png"
+            alt="ReconOS Logo"
+            className="w-full h-full object-contain rounded-xl"
+          />
         </div>
         <div className="text-center">
           <h2 className="text-lg font-bold tracking-tight">Recon<span className="text-blue-400">OS</span></h2>
