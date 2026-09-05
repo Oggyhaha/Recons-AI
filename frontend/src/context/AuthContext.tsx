@@ -11,27 +11,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   register: (data: { email: string; password: string; name: string; role?: string; tenant_name?: string }) => Promise<void>;
   logout: () => void;
-  switchRole: (role: string) => Promise<void>;
 }
-
-const DEFAULT_DEMO_USER: UserProfile = {
-  user_id: "usr_controller_01",
-  name: "Sarah Chen, CPA",
-  email: "controller@razorpay-merchant.com",
-  role: "FINANCE_CONTROLLER",
-  tenant_id: "mid_razorpay_ent_001",
-  tenant_name: "Enterprise Retail Tech Ltd",
-  permissions: [
-    "RECONCILIATION_RUN",
-    "EXCEPTION_APPROVE",
-    "EXCEPTION_FORCE_MATCH",
-    "EXCEPTION_WRITE_OFF",
-    "DISPUTE_GENERATE",
-    "ERP_JOURNAL_EXPORT",
-    "CASH_TREASURY_VIEW",
-    "AUDIT_PROVENANCE_VIEW"
-  ]
-};
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -44,20 +24,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const storedUser = localStorage.getItem("reconos_auth_user");
       const storedToken = localStorage.getItem("reconos_auth_token");
-      const loggedOut = localStorage.getItem("reconos_logged_out");
 
       if (storedUser && storedToken) {
         setUser(JSON.parse(storedUser));
         setToken(storedToken);
-      } else if (!loggedOut) {
-        // Pre-seed default demo account for seamless first-run experience
-        setUser(DEFAULT_DEMO_USER);
-        setToken("mock_jwt_token_usr_controller_01");
-        localStorage.setItem("reconos_auth_user", JSON.stringify(DEFAULT_DEMO_USER));
-        localStorage.setItem("reconos_auth_token", "mock_jwt_token_usr_controller_01");
+      } else {
+        setUser(null);
+        setToken(null);
       }
     } catch (e) {
       console.error("Failed to restore auth session:", e);
+      setUser(null);
+      setToken(null);
     } finally {
       setIsLoading(false);
     }
@@ -71,7 +49,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setToken(res.access_token);
       localStorage.setItem("reconos_auth_user", JSON.stringify(res.user));
       localStorage.setItem("reconos_auth_token", res.access_token);
-      localStorage.removeItem("reconos_logged_out");
     } finally {
       setIsLoading(false);
     }
@@ -86,12 +63,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }) => {
     setIsLoading(true);
     try {
-      const res = await api.register(data);
+      const payload = {
+        ...data,
+        role: "FINANCE_CONTROLLER", // Strictly Finance Controller only
+      };
+      const res = await api.register(payload);
       setUser(res.user);
       setToken(res.access_token);
       localStorage.setItem("reconos_auth_user", JSON.stringify(res.user));
       localStorage.setItem("reconos_auth_token", res.access_token);
-      localStorage.removeItem("reconos_logged_out");
     } finally {
       setIsLoading(false);
     }
@@ -102,22 +82,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setToken(null);
     localStorage.removeItem("reconos_auth_user");
     localStorage.removeItem("reconos_auth_token");
-    localStorage.setItem("reconos_logged_out", "true");
-  };
-
-  const switchRole = async (role: string) => {
-    try {
-      const res = await api.switchRole(role, token || undefined);
-      setUser(res.user);
-      localStorage.setItem("reconos_auth_user", JSON.stringify(res.user));
-    } catch (e) {
-      // Fallback local update if network is unavailable
-      if (user) {
-        const updated = { ...user, role };
-        setUser(updated);
-        localStorage.setItem("reconos_auth_user", JSON.stringify(updated));
-      }
-    }
   };
 
   return (
@@ -129,7 +93,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         login,
         register,
         logout,
-        switchRole,
       }}
     >
       {children}

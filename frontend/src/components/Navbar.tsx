@@ -2,18 +2,15 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   ShieldCheck,
   RefreshCw,
   CheckCircle2,
   ChevronDown,
-  UserCheck,
   Menu,
   X,
   LogOut,
-  LogIn,
-  User,
   LayoutDashboard,
   FileSpreadsheet,
   AlertTriangle,
@@ -22,7 +19,7 @@ import {
   Award,
   History,
   Building,
-  Sparkles
+  Briefcase
 } from "lucide-react";
 import { api } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
@@ -30,41 +27,34 @@ import { cn } from "@/lib/utils";
 
 interface NavbarProps {
   onBatchGenerated?: () => void;
-  activeRole?: string;
-  onRoleChange?: (role: string) => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({
-  onBatchGenerated,
-  activeRole: propActiveRole,
-  onRoleChange,
-}) => {
+export const Navbar: React.FC<NavbarProps> = ({ onBatchGenerated }) => {
   const pathname = usePathname();
-  const { user, logout, switchRole } = useAuth();
+  const router = useRouter();
+  const { user, logout } = useAuth();
 
   const [isGenerating, setIsGenerating] = useState(false);
-  const [roleMenuOpen, setRoleMenuOpen] = useState(false);
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
 
-  const roleMenuRef = useRef<HTMLDivElement>(null);
+  const profileMenuRef = useRef<HTMLDivElement>(null);
 
-  const currentRole = user?.role || propActiveRole || "FINANCE_CONTROLLER";
-
-  // Click outside listener to automatically close role dropdown
+  // Click outside listener to automatically close dropdown
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (roleMenuRef.current && !roleMenuRef.current.contains(event.target as Node)) {
-        setRoleMenuOpen(false);
+      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target as Node)) {
+        setProfileMenuOpen(false);
       }
     };
 
-    if (roleMenuOpen) {
+    if (profileMenuOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     }
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [roleMenuOpen]);
+  }, [profileMenuOpen]);
 
   // Close mobile drawer on route change
   useEffect(() => {
@@ -83,17 +73,12 @@ export const Navbar: React.FC<NavbarProps> = ({
     }
   };
 
-  const handleSelectRole = async (roleId: string) => {
-    if (onRoleChange) onRoleChange(roleId);
-    await switchRole(roleId);
-    setRoleMenuOpen(false);
+  const handleLogout = () => {
+    logout();
+    setProfileMenuOpen(false);
+    setMobileDrawerOpen(false);
+    router.replace("/login");
   };
-
-  const roles = [
-    { id: "FINANCE_CONTROLLER", label: "Finance Controller", desc: "Full approvals, write-offs & journal export" },
-    { id: "TREASURY_ANALYST", label: "Treasury Analyst", desc: "Cash intelligence & forecasting" },
-    { id: "AUDITOR", label: "Compliance Auditor", desc: "Read-only & SHA-256 provenance logs" },
-  ];
 
   const navItems = [
     { label: "Control Center", href: "/", icon: LayoutDashboard },
@@ -158,96 +143,62 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span className="hidden md:inline">Deterministic Engine</span> Active
             </div>
 
-            {/* User Profile / Persona Dropdown */}
-            <div className="relative" ref={roleMenuRef}>
-              {user ? (
-                <button
-                  onClick={() => setRoleMenuOpen((prev) => !prev)}
-                  aria-expanded={roleMenuOpen}
-                  className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-lg border text-xs font-semibold transition-all ${
-                    roleMenuOpen
-                      ? "border-[#0C83FF] ring-2 ring-blue-100 bg-blue-50/50 text-[#0C2340]"
-                      : "border-slate-200 text-slate-700 bg-slate-50 hover:bg-slate-100"
-                  }`}
-                >
-                  <div className="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] font-bold">
-                    {user.name ? user.name.charAt(0).toUpperCase() : "U"}
-                  </div>
-                  <span className="hidden md:inline font-normal text-slate-500">Role:</span>
-                  <span className="font-bold text-[#0C2340] max-w-[90px] sm:max-w-none truncate">
-                    {roles.find((r) => r.id === currentRole)?.label.split(" ")[0] || currentRole}
-                  </span>
-                  <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform ${roleMenuOpen ? "rotate-180" : ""}`} />
-                </button>
-              ) : (
-                <Link
-                  href="/login"
-                  className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-colors"
-                >
-                  <LogIn className="w-3.5 h-3.5" />
-                  <span>Sign In</span>
-                </Link>
-              )}
+            {/* Finance Controller User Badge with Dropdown */}
+            <div className="relative" ref={profileMenuRef}>
+              <button
+                onClick={() => setProfileMenuOpen((prev) => !prev)}
+                aria-expanded={profileMenuOpen}
+                className={`flex items-center gap-2 px-2.5 sm:px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all ${
+                  profileMenuOpen
+                    ? "border-[#0C83FF] ring-2 ring-blue-100 bg-blue-50/50 text-[#0C2340]"
+                    : "border-slate-200 text-slate-700 bg-slate-50 hover:bg-slate-100"
+                }`}
+              >
+                <div className="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] font-bold">
+                  {user?.name ? user.name.charAt(0).toUpperCase() : "C"}
+                </div>
+                <div className="text-left hidden sm:block">
+                  <div className="font-bold text-[#0C2340] leading-none">{user?.name || "Sarah Chen, CPA"}</div>
+                  <div className="text-[10px] text-blue-600 font-semibold mt-0.5">Finance Controller</div>
+                </div>
+                <span className="sm:hidden font-bold text-[#0C2340]">Controller</span>
+                <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform ${profileMenuOpen ? "rotate-180" : ""}`} />
+              </button>
 
-              {/* Profile / Role Dropdown Menu */}
-              {roleMenuOpen && (
-                <div className="absolute right-0 mt-2 w-72 bg-white border border-slate-200 rounded-xl shadow-xl py-2 z-50 animate-in fade-in zoom-in-95 duration-150">
-                  {user && (
-                    <div className="px-3.5 py-2.5 border-b border-slate-100 mb-1 bg-slate-50/70">
-                      <div className="font-bold text-xs text-slate-900">{user.name}</div>
-                      <div className="text-[11px] text-slate-500 truncate">{user.email}</div>
-                      <div className="flex items-center gap-1 mt-1.5 text-[10px] font-semibold text-blue-700 bg-blue-100/60 px-2 py-0.5 rounded border border-blue-200/60">
-                        <Building className="w-3 h-3 text-blue-500" />
-                        <span className="truncate">{user.tenant_name || "Enterprise Retail Tech Ltd"}</span>
-                      </div>
+              {/* Profile Dropdown Menu */}
+              {profileMenuOpen && (
+                <div className="absolute right-0 mt-2 w-72 bg-white border border-slate-200 rounded-2xl shadow-xl py-2 z-50 animate-in fade-in zoom-in-95 duration-150">
+                  <div className="px-4 py-3 border-b border-slate-100 bg-slate-50/70">
+                    <div className="font-bold text-xs text-slate-900">{user?.name || "Sarah Chen, CPA"}</div>
+                    <div className="text-[11px] text-slate-500 font-medium truncate">{user?.email || "controller@razorpay-merchant.com"}</div>
+                    <div className="flex items-center gap-1 mt-2 text-[10px] font-semibold text-blue-700 bg-blue-100/60 px-2 py-0.5 rounded border border-blue-200/60">
+                      <Building className="w-3 h-3 text-blue-500 shrink-0" />
+                      <span className="truncate">{user?.tenant_name || "Enterprise Retail Tech Ltd"}</span>
                     </div>
-                  )}
-
-                  <div className="px-3.5 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                    Switch Operational Persona
                   </div>
 
-                  {roles.map((r) => (
-                    <button
-                      key={r.id}
-                      onClick={() => handleSelectRole(r.id)}
-                      className="w-full text-left px-3.5 py-2 text-xs hover:bg-slate-50 flex items-start gap-2.5 transition-colors"
-                    >
-                      <div className="pt-0.5">
-                        {currentRole === r.id ? (
-                          <CheckCircle2 className="w-3.5 h-3.5 text-[#0C83FF]" />
-                        ) : (
-                          <div className="w-3.5 h-3.5 rounded-full border border-slate-300" />
-                        )}
-                      </div>
-                      <div>
-                        <div className="font-bold text-slate-800">{r.label}</div>
-                        <div className="text-[10px] text-slate-500 leading-tight">{r.desc}</div>
-                      </div>
-                    </button>
-                  ))}
+                  <div className="px-4 py-2.5 space-y-1.5 text-xs text-slate-600 border-b border-slate-100">
+                    <div className="flex items-center justify-between text-[11px]">
+                      <span className="text-slate-400 font-medium">Role:</span>
+                      <span className="font-bold text-slate-800 flex items-center gap-1">
+                        <Briefcase className="w-3 h-3 text-blue-600" />
+                        Finance Controller
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between text-[11px]">
+                      <span className="text-slate-400 font-medium">Authority:</span>
+                      <span className="font-semibold text-emerald-700">Full Sign-off & Write-off</span>
+                    </div>
+                  </div>
 
-                  <div className="border-t border-slate-100 mt-2 pt-1 px-2">
-                    <Link
-                      href="/login"
-                      onClick={() => setRoleMenuOpen(false)}
-                      className="w-full text-left px-2 py-1.5 text-xs text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded flex items-center gap-2"
+                  <div className="pt-1 px-2">
+                    <button
+                      onClick={handleLogout}
+                      className="w-full text-left px-3 py-2 text-xs text-rose-600 hover:bg-rose-50 rounded-xl flex items-center gap-2 font-bold transition-colors"
                     >
-                      <User className="w-3.5 h-3.5 text-slate-400" />
-                      <span>Switch Account</span>
-                    </Link>
-                    {user && (
-                      <button
-                        onClick={() => {
-                          logout();
-                          setRoleMenuOpen(false);
-                        }}
-                        className="w-full text-left px-2 py-1.5 text-xs text-rose-600 hover:bg-rose-50 rounded flex items-center gap-2 font-medium"
-                      >
-                        <LogOut className="w-3.5 h-3.5" />
-                        <span>Sign Out</span>
-                      </button>
-                    )}
+                      <LogOut className="w-3.5 h-3.5" />
+                      <span>Sign Out</span>
+                    </button>
                   </div>
                 </div>
               )}
@@ -308,42 +259,29 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </button>
               </div>
 
-              {/* User Profile Mini Banner */}
-              {user ? (
-                <div className="p-3.5 mx-3 mt-3 rounded-xl bg-slate-50 border border-slate-200/80">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
-                      {user.name ? user.name.charAt(0).toUpperCase() : "U"}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="font-bold text-xs text-slate-900 truncate">{user.name}</div>
-                      <div className="text-[10px] text-slate-500 font-medium truncate">{user.email}</div>
-                    </div>
+              {/* Finance Controller Card inside Mobile Drawer */}
+              <div className="p-3.5 mx-3 mt-3 rounded-xl bg-slate-50 border border-slate-200/80">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
+                    {user?.name ? user.name.charAt(0).toUpperCase() : "C"}
                   </div>
-                  <div className="mt-2 pt-2 border-t border-slate-200 flex items-center justify-between text-[11px]">
-                    <span className="text-slate-500 font-medium">Role:</span>
-                    <span className="font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded text-[10px]">
-                      {currentRole.replace("_", " ")}
-                    </span>
+                  <div className="min-w-0 flex-1">
+                    <div className="font-bold text-xs text-slate-900 truncate">{user?.name || "Sarah Chen, CPA"}</div>
+                    <div className="text-[10px] text-slate-500 font-medium truncate">{user?.email || "controller@razorpay-merchant.com"}</div>
                   </div>
                 </div>
-              ) : (
-                <div className="p-3 mx-3 mt-3">
-                  <Link
-                    href="/login"
-                    onClick={() => setMobileDrawerOpen(false)}
-                    className="w-full py-2 px-3 bg-blue-600 text-white rounded-lg text-xs font-bold flex items-center justify-center gap-2 shadow-sm"
-                  >
-                    <LogIn className="w-4 h-4" />
-                    <span>Sign In to ReconOS</span>
-                  </Link>
+                <div className="mt-2 pt-2 border-t border-slate-200 flex items-center justify-between text-[11px]">
+                  <span className="text-slate-500 font-medium">Role:</span>
+                  <span className="font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded text-[10px]">
+                    FINANCE CONTROLLER
+                  </span>
                 </div>
-              )}
+              </div>
 
               {/* Navigation Links */}
               <div className="px-3 py-3 space-y-1">
                 <div className="px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                  Navigation
+                  Operations Navigation
                 </div>
                 {navItems.map((item) => {
                   const isActive = pathname === item.href;
@@ -405,18 +343,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span>{isGenerating ? "Simulating..." : "Run 500-Batch FinSim"}</span>
               </button>
 
-              {user && (
-                <button
-                  onClick={() => {
-                    logout();
-                    setMobileDrawerOpen(false);
-                  }}
-                  className="w-full flex items-center justify-center gap-2 py-2 px-3 text-xs font-semibold text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
-                >
-                  <LogOut className="w-3.5 h-3.5" />
-                  <span>Sign Out</span>
-                </button>
-              )}
+              <button
+                onClick={handleLogout}
+                className="w-full flex items-center justify-center gap-2 py-2 px-3 text-xs font-semibold text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                <span>Sign Out</span>
+              </button>
             </div>
           </div>
         </div>
