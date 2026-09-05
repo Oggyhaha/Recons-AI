@@ -19,6 +19,7 @@ import { api } from "@/lib/api";
 import { ExceptionRecord, AgentInvestigation } from "@/lib/types";
 import { formatINR, formatDate } from "@/lib/utils";
 import { StatusBadge } from "@/components/StatusBadge";
+import { DisputePackageModal } from "./DisputePackageModal";
 
 interface CaseRoomModalProps {
   transactionId: string;
@@ -40,6 +41,7 @@ export const CaseRoomModal: React.FC<CaseRoomModalProps> = ({
   const [submittingAction, setSubmittingAction] = useState(false);
   const [actionNotes, setActionNotes] = useState("");
   const [actionFeedback, setActionFeedback] = useState<string | null>(null);
+  const [disputeModalOpen, setDisputeModalOpen] = useState(false);
 
   // Close on Escape key press
   useEffect(() => {
@@ -128,12 +130,21 @@ export const CaseRoomModal: React.FC<CaseRoomModalProps> = ({
             </div>
           </div>
 
-          <button
-            onClick={onClose}
-            className="p-1.5 text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setDisputeModalOpen(true)}
+              className="px-3 py-1.5 text-xs font-bold text-white bg-[#0C83FF] hover:bg-[#0266CC] rounded-xl shadow-xs transition-colors flex items-center gap-1.5"
+            >
+              <FileText className="w-3.5 h-3.5" />
+              <span>Generate Dispute Package</span>
+            </button>
+            <button
+              onClick={onClose}
+              className="p-1.5 text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* Modal Body */}
@@ -379,6 +390,13 @@ export const CaseRoomModal: React.FC<CaseRoomModalProps> = ({
           )}
         </div>
       </div>
+
+      {/* Dispute Package Modal */}
+      <DisputePackageModal
+        transactionId={transactionId}
+        isOpen={disputeModalOpen}
+        onClose={() => setDisputeModalOpen(false)}
+      />
     </div>
   );
 };

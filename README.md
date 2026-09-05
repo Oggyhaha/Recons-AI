@@ -4,7 +4,7 @@
 [![Next.js](https://img.shields.io/badge/Next.js-14.2.24-black.svg?logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue.svg?logo=typescript)](https://www.typescriptlang.org/)
 [![TailwindCSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC.svg?logo=tailwind-css)](https://tailwindcss.com/)
-[![Tests](https://img.shields.io/badge/Tests-13%2F13%20Passed-success.svg)](https://pytest.org)
+[![Tests](https://img.shields.io/badge/Tests-18%2F18%20Passed-success.svg)](https://pytest.org)
 [![Match Rate](https://img.shields.io/badge/Reconciliation-89.56%25%20Honest%20Match-blue.svg)](#)
 [![Hallucination Rate](https://img.shields.io/badge/False%20Matches-0%25-brightgreen.svg)](#)
 
@@ -141,6 +141,28 @@ ReconOS is an **enterprise autonomous finance control plane** built on a hybrid 
 ### 7. Immutable Cryptographic Audit & Provenance Log
 - Every event is recorded in a SHA-256 hash-chained compliance ledger.
 - Provides tamper-evident proof of state transitions, execution latencies, and controller sign-offs.
+
+### 8. One-Click Razorpay Dispute & Recovery Package Generator
+- Closes the finance-ops loop from break detection to active revenue recovery.
+- Inside the Case Room, one click generates:
+  1. **Formal Dispute Memo**: Addressed to `merchant-support@razorpay.com` with Merchant ID, Settlement UTR, contract fee schedule (1.80%), charged fee (2.50%), and exact claimed refund in INR.
+  2. **CSV Evidence Sheet**: Transaction-level calculations ready for Razorpay Merchant Support audit.
+
+### 9. Double-Entry Accounting Journal Export (Tally / ERP Sync)
+- Bridges reconciled batches directly into the corporate General Ledger (Tally Prime, Zoho Books, SAP, QuickBooks).
+- Generates balanced GAAP / Ind AS double-entry vouchers:
+  - `Dr. Bank Current Account` (Net settlement received)
+  - `Dr. Payment Gateway Processing Fees Account` (MDR expense)
+  - `Dr. GST Input Tax Credit Account` (18% ITC on gateway fees)
+  - `Dr. Sales Returns & Customer Refunds Account` (Customer refund reversals)
+  - `Cr. Accounts Receivable / Customer Sales Revenue` (Gross order recognition)
+- Mathematical balance invariant guarantee: $\sum \text{Debits} == \sum \text{Credits}$ strictly in integer Paise.
+- Exports available in **Tally Prime XML**, **Universal ERP CSV**, and **JSON**.
+
+### 10. Real-World CSV Ingestion & Live Webhook Listener
+- **Drag-and-Drop CSV Ingestion**: Upload real bank statements (HDFC, ICICI, SBI) or Razorpay payout CSVs with auto-parsing to minor units (Paise) and instant reconciliation.
+- **Pre-Built Sample CSVs**: 1-click downloads for Unified, Bank Statement, and Orders templates for instant testing.
+- **Live Razorpay Webhooks (`/api/v1/webhooks/razorpay`)**: Real-time listener verifying `X-Razorpay-Signature` via **HMAC-SHA256** for `payment.captured`, `settlement.processed`, and `refund.processed` with an interactive simulation sandbox.
 
 ---
 

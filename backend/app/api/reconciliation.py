@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Query, HTTPException
+from fastapi import APIRouter, Query, HTTPException, Response
 from typing import Dict, Any, List, Optional
 from app.services.state_store import system_state
 from app.models.schemas import ReconciliationRunRequest
+from app.services.journal_service import JournalService
 
 router = APIRouter(prefix="/reconciliation", tags=["Reconciliation Core"])
 
@@ -98,3 +99,29 @@ async def get_result_detail(entity_id: str):
         "result": found,
         "lifecycle_graph": lifecycle_graph
     }
+
+@router.get("/journal-export")
+async def export_journal_entries(
+    format: str = Query("json", description="Export format: json, csv, tally_xml"),
+    run_id: str = Query("RUN-RZP-2026-001", description="Reconciliation Run ID")
+):
+    """
+    Generates balanced double-entry accounting journal entries for the current reconciled batch.
+    Supports JSON, standard ERP CSV, and Tally Prime XML.
+    """
+    data = JournalService.generate_journal_entries(run_id=run_id)
+    
+    if format == "csv":
+        return Response(
+            content=data["csv_export"],
+            media_type="text/csv",
+            headers={"Content-Disposition": f'attachment; filename="journal_{run_id}.csv"'}
+        )
+    elif format == "tally_xml":
+        return Response(
+            content=data["tally_xml_export"],
+            media_type="application/xml",
+            headers={"Content-Disposition": f'attachment; filename="tally_{run_id}.xml"'}
+        )
+    
+    return data

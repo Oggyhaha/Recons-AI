@@ -9,6 +9,7 @@ from app.api.cash import router as cash_router
 from app.api.agent import router as agent_router
 from app.api.evaluation import router as evaluation_router
 from app.api.audit import router as audit_router
+from app.api.webhooks import router as webhooks_router
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -35,6 +36,7 @@ app.include_router(cash_router, prefix=api_v1)
 app.include_router(agent_router, prefix=api_v1)
 app.include_router(evaluation_router, prefix=api_v1)
 app.include_router(audit_router, prefix=api_v1)
+app.include_router(webhooks_router, prefix=api_v1)
 
 @app.get("/health")
 @app.get(f"{api_v1}/health")

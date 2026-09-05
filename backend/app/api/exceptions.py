@@ -1,10 +1,11 @@
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Response
 from typing import Dict, Any, List, Optional
 from datetime import datetime, timezone
 from app.services.state_store import system_state
 from app.models.schemas import HumanApprovalRequest
 from app.services.audit_service import audit_service
 from app.services.cash_engine import CashEngine
+from app.services.dispute_service import DisputeService
 
 router = APIRouter(prefix="/exceptions", tags=["Exception Management & Case Room"])
 
@@ -128,3 +129,31 @@ async def review_exception(transaction_id: str, req: HumanApprovalRequest):
         "exception": found,
         "updated_cash_position": system_state.cash_position_data
     }
+
+@router.get("/{transaction_id}/dispute-package")
+async def get_dispute_package(
+    transaction_id: str,
+    merchant_id: str = Query("MID_RECONOS_ENTERPRISE", description="Merchant ID for dispute notice")
+):
+    try:
+        package = DisputeService.generate_dispute_package(transaction_id, merchant_id)
+        return package
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+@router.get("/{transaction_id}/dispute-package/download-csv")
+async def download_dispute_csv(
+    transaction_id: str,
+    merchant_id: str = Query("MID_RECONOS_ENTERPRISE", description="Merchant ID for dispute notice")
+):
+    try:
+        package = DisputeService.generate_dispute_package(transaction_id, merchant_id)
+        return Response(
+            content=package["csv_evidence"],
+            media_type="text/csv",
+            headers={
+                "Content-Disposition": f'attachment; filename="dispute_{transaction_id}.csv"'
+            }
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))

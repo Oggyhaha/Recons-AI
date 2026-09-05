@@ -10,12 +10,18 @@ import {
   ChevronLeft,
   ChevronRight,
   ArrowUpDown,
-  Download
+  Download,
+  UploadCloud,
+  BookOpen,
+  Radio
 } from "lucide-react";
 import { api } from "@/lib/api";
 import { ReconciliationResult, ReconciliationRun } from "@/lib/types";
 import { StatusBadge } from "@/components/StatusBadge";
 import { WhyMatchedModal } from "@/components/WhyMatchedModal";
+import { JournalExportModal } from "@/components/JournalExportModal";
+import { CsvUploaderModal } from "@/components/CsvUploaderModal";
+import { WebhookSimulatorModal } from "@/components/WebhookSimulatorModal";
 import { formatINR } from "@/lib/utils";
 
 export default function ReconciliationWorkspacePage() {
@@ -31,6 +37,11 @@ export default function ReconciliationWorkspacePage() {
   // Why Matched Modal
   const [selectedResult, setSelectedResult] = useState<ReconciliationResult | null>(null);
   const [whyModalOpen, setWhyModalOpen] = useState(false);
+
+  // New Modals
+  const [journalModalOpen, setJournalModalOpen] = useState(false);
+  const [csvModalOpen, setCsvModalOpen] = useState(false);
+  const [webhookModalOpen, setWebhookModalOpen] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -91,15 +102,44 @@ export default function ReconciliationWorkspacePage() {
           </p>
         </div>
 
-        {/* Stats Strip */}
-        <div className="flex items-center gap-3 text-xs">
-          <div className="px-3 py-1.5 bg-white border border-slate-200 rounded-lg shadow-2xs">
-            <span className="text-slate-500 mr-1.5">Matched:</span>
-            <span className="font-mono font-bold text-emerald-700">{run?.matched_count || 0}</span>
-          </div>
-          <div className="px-3 py-1.5 bg-white border border-slate-200 rounded-lg shadow-2xs">
-            <span className="text-slate-500 mr-1.5">Exceptions:</span>
-            <span className="font-mono font-bold text-rose-700">{run?.exception_count || 0}</span>
+        {/* Actions & Stats Toolbar */}
+        <div className="flex flex-wrap items-center gap-2.5">
+          <button
+            onClick={() => setCsvModalOpen(true)}
+            className="px-3 py-1.5 text-xs font-bold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl shadow-2xs transition-colors flex items-center gap-1.5"
+          >
+            <UploadCloud className="w-3.5 h-3.5 text-[#0C83FF]" />
+            <span>Upload CSV</span>
+          </button>
+
+          <button
+            onClick={() => setJournalModalOpen(true)}
+            className="px-3 py-1.5 text-xs font-bold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl shadow-2xs transition-colors flex items-center gap-1.5"
+          >
+            <BookOpen className="w-3.5 h-3.5 text-[#0C83FF]" />
+            <span>Export ERP Journal</span>
+          </button>
+
+          <button
+            onClick={() => setWebhookModalOpen(true)}
+            className="px-3 py-1.5 text-xs font-bold text-[#0C83FF] bg-blue-50/80 hover:bg-blue-100 border border-blue-200 rounded-xl shadow-2xs transition-colors flex items-center gap-1.5"
+          >
+            <Radio className="w-3.5 h-3.5 animate-pulse" />
+            <span>Live Webhooks</span>
+          </button>
+
+          <div className="h-5 w-px bg-slate-200 hidden sm:block" />
+
+          {/* Stats Strip */}
+          <div className="flex items-center gap-2 text-xs">
+            <div className="px-3 py-1.5 bg-white border border-slate-200 rounded-lg shadow-2xs">
+              <span className="text-slate-500 mr-1.5">Matched:</span>
+              <span className="font-mono font-bold text-emerald-700">{run?.matched_count || 0}</span>
+            </div>
+            <div className="px-3 py-1.5 bg-white border border-slate-200 rounded-lg shadow-2xs">
+              <span className="text-slate-500 mr-1.5">Exceptions:</span>
+              <span className="font-mono font-bold text-rose-700">{run?.exception_count || 0}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -242,6 +282,31 @@ export default function ReconciliationWorkspacePage() {
         onClose={() => {
           setWhyModalOpen(false);
           setSelectedResult(null);
+        }}
+      />
+
+      {/* Journal Export Modal */}
+      <JournalExportModal
+        runId={run?.run_id || "RUN-RZP-2026-001"}
+        isOpen={journalModalOpen}
+        onClose={() => setJournalModalOpen(false)}
+      />
+
+      {/* Real CSV Uploader Modal */}
+      <CsvUploaderModal
+        isOpen={csvModalOpen}
+        onClose={() => setCsvModalOpen(false)}
+        onSuccess={() => {
+          loadData();
+        }}
+      />
+
+      {/* Razorpay Webhook Simulator Modal */}
+      <WebhookSimulatorModal
+        isOpen={webhookModalOpen}
+        onClose={() => setWebhookModalOpen(false)}
+        onEventProcessed={() => {
+          loadData();
         }}
       />
     </div>
