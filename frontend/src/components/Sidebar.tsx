@@ -68,7 +68,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ exceptionCount = 39, matchRate
   ];
 
   return (
-    <aside className="w-64 shrink-0 hidden md:flex flex-col justify-between bg-white border-r border-slate-200/90 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto p-4 self-start">
+    <aside className="w-64 shrink-0 hidden md:flex flex-col justify-between bg-white border-r border-slate-200/90 h-full overflow-y-auto p-4 select-none">
       <div className="space-y-1">
         <div className="px-3 py-2 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
           Financial Operations

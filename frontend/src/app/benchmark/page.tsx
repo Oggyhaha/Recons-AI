@@ -84,8 +84,8 @@ export default function BenchmarkPage() {
       </div>
 
       {/* Flagship Section 1: Rules-Only vs ReconOS Hybrid Benchmark Matrix */}
-      <div className="fin-card p-6">
-        <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+      <div className="fin-card p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
           <div>
             <h2 className="text-sm font-bold text-slate-900 tracking-tight">
               Reconciliation Strategy Comparison Matrix
@@ -94,13 +94,13 @@ export default function BenchmarkPage() {
               Empirical proof demonstrating why deterministic controls combined with selective AI investigation outperforms pure rules.
             </p>
           </div>
-          <span className="text-xs font-mono font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-1 rounded">
+          <span className="text-xs font-mono font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-1 rounded self-start sm:self-auto shrink-0">
             FinSim 500-Batch Benchmark
           </span>
         </div>
 
         <div className="overflow-x-auto mt-3">
-          <table className="w-full fin-table">
+          <table className="w-full fin-table min-w-[620px]">
             <thead>
               <tr>
                 <th>Operational Metric</th>
@@ -128,11 +128,11 @@ export default function BenchmarkPage() {
       </div>
 
       {/* Flagship Section 2: The Honest Exception List */}
-      <div className="fin-card p-6 border-l-4 border-l-amber-500">
-        <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+      <div className="fin-card p-4 sm:p-6 border-l-4 border-l-amber-500">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
           <div>
             <div className="flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 text-amber-600" />
+              <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
               <h2 className="text-sm font-bold text-slate-900 tracking-tight">
                 The Honest Exception List (Unresolvable Discrepancies)
               </h2>
@@ -141,13 +141,13 @@ export default function BenchmarkPage() {
               &quot;The controller knows when it doesn&apos;t know.&quot; Transactions that could not be proved with 100% certainty are explicitly surfaced.
             </p>
           </div>
-          <span className="text-xs font-mono font-bold text-amber-800 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded">
+          <span className="text-xs font-mono font-bold text-amber-800 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded self-start sm:self-auto shrink-0">
             {report?.honest_exception_list.length || 0} Intentionally Unresolved Cases
           </span>
         </div>
 
         <div className="overflow-x-auto mt-3">
-          <table className="w-full fin-table">
+          <table className="w-full fin-table min-w-[700px]">
             <thead>
               <tr>
                 <th>Transaction ID</th>

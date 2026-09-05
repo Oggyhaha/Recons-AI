@@ -92,7 +92,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onBatchGenerated }) => {
 
   return (
     <>
-      <header className="sticky top-0 z-40 bg-white border-b border-slate-200/90 shadow-2xs w-full max-w-full overflow-hidden">
+      <header className="h-16 shrink-0 z-40 bg-white border-b border-slate-200/90 shadow-2xs w-full max-w-full overflow-hidden select-none">
         <div className="w-full px-2.5 sm:px-6 lg:px-8 xl:px-10 h-16 flex items-center justify-between gap-2">
           {/* Brand & Mobile Hamburger */}
           <div className="flex items-center gap-1.5 sm:gap-3 min-w-0 shrink-0">

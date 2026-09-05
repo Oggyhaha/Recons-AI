@@ -210,7 +210,7 @@ export default function FinanceCopilotPage() {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-5.5rem)] sm:h-[calc(100vh-5.75rem)] w-full max-w-full overflow-hidden">
+    <div className="flex flex-col h-full w-full max-w-full overflow-hidden">
       {/* Top Banner Header - Compact and responsive */}
       <div className="fin-card p-3 sm:p-4 mb-3 bg-gradient-to-r from-white via-slate-50/50 to-white border-l-4 border-l-[#0C83FF] flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-2xs">
         <div>

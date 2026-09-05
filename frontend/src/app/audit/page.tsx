@@ -86,7 +86,7 @@ export default function AuditPage() {
       </div>
 
       {/* Filter & Search */}
-      <div className="fin-card p-4 flex items-center justify-between gap-3">
+      <div className="fin-card p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="relative flex-1 max-w-md">
           <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
           <input

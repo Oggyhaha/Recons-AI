@@ -63,11 +63,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   // Authenticated: Render complete Finance Controller control plane
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col w-full max-w-full overflow-x-hidden">
+    <div className="h-screen h-[100dvh] bg-slate-50 flex flex-col w-full max-w-full overflow-hidden">
       <Navbar />
-      <div className="flex w-full flex-1 max-w-full overflow-x-hidden">
+      <div className="flex w-full flex-1 min-h-0 overflow-hidden">
         <Sidebar />
-        <main className="flex-1 min-w-0 p-2.5 sm:p-5 lg:p-7 xl:p-8 w-full max-w-full overflow-x-hidden">
+        <main className="flex-1 h-full min-w-0 overflow-y-auto overflow-x-hidden p-3 sm:p-5 lg:p-7 xl:p-8 w-full max-w-full">
           {children}
         </main>
       </div>
