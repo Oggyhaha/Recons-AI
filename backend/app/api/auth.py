@@ -2,20 +2,20 @@ import hashlib
 from datetime import datetime, timezone
 from typing import Dict, Any, List, Optional
 from fastapi import APIRouter, HTTPException, Depends, Header
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 
 router = APIRouter(prefix="/auth", tags=["Authentication & User Management"])
 
 # Schemas
 class RegisterRequest(BaseModel):
     name: str
-    email: EmailStr
+    email: str
     password: str
     organization_name: str = "Enterprise Merchant Inc."
     role: str = "FINANCE_CONTROLLER"
 
 class LoginRequest(BaseModel):
-    email: EmailStr
+    email: str
     password: str
 
 class SwitchRoleRequest(BaseModel):
