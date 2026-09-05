@@ -92,20 +92,20 @@ export const Navbar: React.FC<NavbarProps> = ({ onBatchGenerated }) => {
 
   return (
     <>
-      <header className="sticky top-0 z-40 bg-white border-b border-slate-200/90 shadow-2xs">
-        <div className="w-full px-3 sm:px-6 lg:px-8 xl:px-10 h-16 flex items-center justify-between">
+      <header className="sticky top-0 z-40 bg-white border-b border-slate-200/90 shadow-2xs w-full max-w-full overflow-hidden">
+        <div className="w-full px-2.5 sm:px-6 lg:px-8 xl:px-10 h-16 flex items-center justify-between gap-2">
           {/* Brand & Mobile Hamburger */}
-          <div className="flex items-center gap-2 sm:gap-4">
+          <div className="flex items-center gap-1.5 sm:gap-3 min-w-0 shrink-0">
             {/* Mobile Hamburger Button */}
             <button
               onClick={() => setMobileDrawerOpen(true)}
-              className="p-2 -ml-1 text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg md:hidden transition-colors"
+              className="p-1.5 -ml-1 text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg md:hidden transition-colors shrink-0"
               aria-label="Open navigation menu"
             >
-              <Menu className="w-6 h-6" />
+              <Menu className="w-5 h-5" />
             </button>
 
-            <Link href="/" className="flex items-center gap-2 sm:gap-2.5 group">
+            <Link href="/" className="flex items-center gap-1.5 sm:gap-2.5 group shrink-0">
               <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white border border-slate-200/90 p-0.5 flex items-center justify-center shadow-xs ring-1 ring-slate-900/5 transition-transform group-hover:scale-105 shrink-0 overflow-hidden">
                 <img
                   src="/logo.png"
@@ -114,13 +114,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onBatchGenerated }) => {
                 />
               </div>
               <div>
-                <div className="flex items-center gap-1.5 sm:gap-2">
+                <div className="flex items-center gap-1 sm:gap-2">
                   <span className="font-black text-[#0C2340] tracking-tight text-base sm:text-lg">ReconOS</span>
                   <span className="text-[9px] sm:text-[10px] font-bold bg-blue-50 text-[#0C83FF] border border-blue-200/80 px-1.5 py-0.5 rounded font-mono">
                     PRO
                   </span>
                 </div>
-                <p className="text-[10px] text-slate-500 font-medium hidden sm:block">
+                <p className="text-[10px] text-slate-500 font-medium hidden lg:block">
                   Razorpay Settlement & Ledger Control Plane
                 </p>
               </div>
@@ -140,33 +140,32 @@ export const Navbar: React.FC<NavbarProps> = ({ onBatchGenerated }) => {
           </div>
 
           {/* Action Controls & User Persona */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
             {/* Deterministic Verification Pill - Tablet+ */}
-            <div className="hidden sm:flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-lg bg-emerald-50 border border-emerald-200 text-[11px] sm:text-xs font-semibold text-emerald-800">
+            <div className="hidden lg:flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-lg bg-emerald-50 border border-emerald-200 text-[11px] sm:text-xs font-semibold text-emerald-800">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-              <span className="hidden md:inline">Deterministic Engine</span> Active
+              <span>Deterministic Engine Active</span>
             </div>
 
             {/* Finance Controller User Badge with Dropdown */}
-            <div className="relative" ref={profileMenuRef}>
+            <div className="relative shrink-0" ref={profileMenuRef}>
               <button
                 onClick={() => setProfileMenuOpen((prev) => !prev)}
                 aria-expanded={profileMenuOpen}
-                className={`flex items-center gap-2 px-2.5 sm:px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all ${
+                className={`flex items-center gap-1.5 p-1.5 sm:px-3 sm:py-1.5 rounded-xl border text-xs font-semibold transition-all shrink-0 ${
                   profileMenuOpen
                     ? "border-[#0C83FF] ring-2 ring-blue-100 bg-blue-50/50 text-[#0C2340]"
                     : "border-slate-200 text-slate-700 bg-slate-50 hover:bg-slate-100"
                 }`}
               >
-                <div className="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] font-bold">
+                <div className="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] font-bold shrink-0">
                   {user?.name ? user.name.charAt(0).toUpperCase() : "C"}
                 </div>
-                <div className="text-left hidden sm:block">
-                  <div className="font-bold text-[#0C2340] leading-none">{user?.name || "Sarah Chen, CPA"}</div>
+                <div className="text-left hidden md:block">
+                  <div className="font-bold text-[#0C2340] leading-none text-xs">{user?.name || "Sarah Chen, CPA"}</div>
                   <div className="text-[10px] text-blue-600 font-semibold mt-0.5">Finance Controller</div>
                 </div>
-                <span className="sm:hidden font-bold text-[#0C2340]">Controller</span>
-                <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform ${profileMenuOpen ? "rotate-180" : ""}`} />
+                <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform hidden sm:block ${profileMenuOpen ? "rotate-180" : ""}`} />
               </button>
 
               {/* Profile Dropdown Menu */}
@@ -208,15 +207,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onBatchGenerated }) => {
               )}
             </div>
 
-            {/* Quick Batch CTA Button */}
+            {/* Quick Batch CTA Button - Responsive Icon on Mobile, full text on Desktop */}
             <button
               onClick={handleRunBatch}
               disabled={isGenerating}
-              className="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 bg-[#0C83FF] hover:bg-[#0266CC] active:bg-[#0C2340] text-white rounded-lg text-xs font-bold shadow-sm transition-all disabled:opacity-60"
+              title="Run 500-Batch FinSim"
+              className="flex items-center justify-center w-8 h-8 sm:w-auto sm:px-3.5 sm:py-1.5 bg-[#0C83FF] hover:bg-[#0266CC] active:bg-[#0C2340] text-white rounded-lg text-xs font-bold shadow-sm transition-all disabled:opacity-60 shrink-0"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isGenerating ? "animate-spin" : ""}`} />
-              <span className="hidden sm:inline">{isGenerating ? "Reconciling..." : "Run 500-Batch FinSim"}</span>
-              <span className="sm:hidden">{isGenerating ? "..." : "Simulate"}</span>
+              <span className="hidden sm:inline ml-1.5">{isGenerating ? "Reconciling..." : "Run FinSim"}</span>
             </button>
           </div>
         </div>
