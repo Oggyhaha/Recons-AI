@@ -182,7 +182,7 @@ export default function ReconciliationWorkspacePage() {
       {/* Results Table */}
       <div className="fin-card overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full fin-table">
+          <table className="w-full fin-table min-w-[760px]">
             <thead>
               <tr>
                 <th>Lifecycle Order ID</th>

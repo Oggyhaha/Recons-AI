@@ -236,7 +236,7 @@ export default function ControlCenterPage() {
         </div>
 
         <div className="overflow-x-auto mt-2">
-          <table className="w-full fin-table">
+          <table className="w-full fin-table min-w-[700px]">
             <thead>
               <tr>
                 <th>Transaction</th>

@@ -110,26 +110,26 @@ export const CsvUploaderModal: React.FC<CsvUploaderModalProps> = ({
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
-      className="fixed inset-0 z-60 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4 overflow-y-auto"
+      className="fixed inset-0 z-60 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-2 sm:p-4 overflow-y-auto"
     >
-      <div className="bg-white rounded-2xl shadow-fin-elevated border border-slate-200 w-full max-w-3xl max-h-[92vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      <div className="bg-white rounded-2xl shadow-fin-elevated border border-slate-200 w-full max-w-3xl max-h-[95vh] sm:max-h-[92vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-[#0C2340] text-white">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-white/10 border border-white/20 rounded-xl text-[#3395FF]">
-              <UploadCloud className="w-5 h-5" />
+        <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-200 flex items-center justify-between bg-[#0C2340] text-white">
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="p-1.5 sm:p-2 bg-white/10 border border-white/20 rounded-xl text-[#3395FF] shrink-0">
+              <UploadCloud className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <span className="text-[11px] font-bold text-slate-300 font-mono tracking-wider">
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                <span className="text-[10px] sm:text-[11px] font-bold text-slate-300 font-mono tracking-wider">
                   DATA INGESTION ENGINE
                 </span>
-                <span className="text-slate-500">•</span>
-                <span className="text-sm font-bold text-white">
+                <span className="text-slate-500 hidden sm:inline">•</span>
+                <span className="text-xs sm:text-sm font-bold text-white">
                   Real Bank Statement & Settlement CSV Uploader
                 </span>
               </div>
-              <p className="text-xs text-slate-300 mt-0.5">
+              <p className="text-[11px] sm:text-xs text-slate-300 mt-0.5">
                 Upload real CSV files for automated 4-way matching, fee auditing, and cash recalibration
               </p>
             </div>
@@ -137,14 +137,15 @@ export const CsvUploaderModal: React.FC<CsvUploaderModalProps> = ({
 
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+            className="p-1.5 text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors shrink-0"
+            aria-label="Close CSV uploader"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Body */}
-        <div className="p-6 overflow-y-auto space-y-5 flex-1 bg-slate-50/40">
+        <div className="p-3.5 sm:p-6 overflow-y-auto space-y-4 sm:space-y-5 flex-1 bg-slate-50/40">
           {/* Sample Templates Strip */}
           <div className="p-4 bg-blue-50/70 border border-blue-200 rounded-xl">
             <div className="flex items-center justify-between mb-2">

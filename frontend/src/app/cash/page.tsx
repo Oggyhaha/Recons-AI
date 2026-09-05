@@ -106,8 +106,8 @@ export default function CashIntelligencePage() {
       </div>
 
       {/* Forecast Chart & Projection Table */}
-      <div className="fin-card p-6">
-        <div className="flex items-center justify-between mb-4">
+      <div className="fin-card p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
           <div>
             <h2 className="text-sm font-bold text-slate-900 tracking-tight">
               {horizon}-Day Statistical Cash Forecast Projection
@@ -116,14 +116,14 @@ export default function CashIntelligencePage() {
               Explainable statistical projection with upper & lower confidence bands (Confidence: 88%)
             </p>
           </div>
-          <span className="text-xs font-mono font-bold text-slate-700 bg-slate-100 px-2.5 py-1 rounded border border-slate-200">
+          <span className="text-xs font-mono font-bold text-slate-700 bg-slate-100 px-2.5 py-1 rounded border border-slate-200 self-start sm:self-auto">
             Projected End Position: {formatINR(forecast?.projected_amount_minor || 0)}
           </span>
         </div>
 
         {/* Timeline Table */}
         <div className="overflow-x-auto">
-          <table className="w-full fin-table">
+          <table className="w-full fin-table min-w-[650px]">
             <thead>
               <tr>
                 <th>Projection Horizon</th>

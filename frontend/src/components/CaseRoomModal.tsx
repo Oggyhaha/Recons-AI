@@ -107,40 +107,41 @@ export const CaseRoomModal: React.FC<CaseRoomModalProps> = ({
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4 overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-2 sm:p-4 overflow-y-auto"
     >
-      <div className="bg-white rounded-2xl shadow-fin-elevated border border-slate-200 w-full max-w-5xl max-h-[92vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      <div className="bg-white rounded-2xl shadow-fin-elevated border border-slate-200 w-full max-w-5xl max-h-[95vh] sm:max-h-[92vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
         {/* Modal Header */}
-        <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-[#0C2340] text-white">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-white/10 border border-white/20 rounded-xl text-[#3395FF]">
-              <ShieldAlert className="w-5 h-5" />
+        <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#0C2340] text-white">
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="p-1.5 sm:p-2 bg-white/10 border border-white/20 rounded-xl text-[#3395FF] shrink-0">
+              <ShieldAlert className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <span className="text-[11px] font-bold text-slate-300 font-mono tracking-wider">CASE ROOM</span>
-                <span className="text-slate-500">•</span>
-                <span className="text-base font-bold text-white font-mono">{transactionId}</span>
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                <span className="text-[10px] sm:text-[11px] font-bold text-slate-300 font-mono tracking-wider">CASE ROOM</span>
+                <span className="text-slate-500 hidden sm:inline">•</span>
+                <span className="text-sm sm:text-base font-bold text-white font-mono break-all">{transactionId}</span>
                 {exc && <StatusBadge status={exc.severity} size="sm" />}
                 {exc && <StatusBadge status={exc.status} size="sm" />}
               </div>
-              <p className="text-xs text-slate-300 mt-0.5">
+              <p className="text-[11px] sm:text-xs text-slate-300 mt-0.5">
                 Cryptographic lifecycle verification & AI controller investigation
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto">
             <button
               onClick={() => setDisputeModalOpen(true)}
-              className="px-3 py-1.5 text-xs font-bold text-white bg-[#0C83FF] hover:bg-[#0266CC] rounded-xl shadow-xs transition-colors flex items-center gap-1.5"
+              className="flex-1 sm:flex-none px-3 py-1.5 text-xs font-bold text-white bg-[#0C83FF] hover:bg-[#0266CC] rounded-xl shadow-xs transition-colors flex items-center justify-center gap-1.5"
             >
               <FileText className="w-3.5 h-3.5" />
               <span>Generate Dispute Package</span>
             </button>
             <button
               onClick={onClose}
-              className="p-1.5 text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+              className="p-1.5 text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors shrink-0"
+              aria-label="Close case room"
             >
               <X className="w-5 h-5" />
             </button>
@@ -148,7 +149,7 @@ export const CaseRoomModal: React.FC<CaseRoomModalProps> = ({
         </div>
 
         {/* Modal Body */}
-        <div className="p-6 overflow-y-auto space-y-6 flex-1 bg-slate-50/40">
+        <div className="p-3.5 sm:p-6 overflow-y-auto space-y-4 sm:space-y-6 flex-1 bg-slate-50/40">
           {loading ? (
             <div className="py-20 text-center space-y-3">
               <div className="w-8 h-8 border-2 border-[#0C83FF] border-t-transparent rounded-full animate-spin mx-auto" />
@@ -360,11 +361,11 @@ export const CaseRoomModal: React.FC<CaseRoomModalProps> = ({
                   </div>
                 )}
 
-                <div className="mt-4 flex items-center justify-end gap-2.5">
+                <div className="mt-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-2.5">
                   <button
                     onClick={() => handleReviewAction("REJECT")}
                     disabled={submittingAction}
-                    className="px-4 py-2 text-xs font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded-xl transition-colors disabled:opacity-50"
+                    className="px-4 py-2 text-xs font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded-xl transition-colors disabled:opacity-50 text-center"
                   >
                     Reject Record
                   </button>
@@ -372,7 +373,7 @@ export const CaseRoomModal: React.FC<CaseRoomModalProps> = ({
                   <button
                     onClick={() => handleReviewAction("REQUEST_REVIEW")}
                     disabled={submittingAction}
-                    className="px-4 py-2 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-xl transition-colors disabled:opacity-50"
+                    className="px-4 py-2 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-xl transition-colors disabled:opacity-50 text-center"
                   >
                     Request Ops Inquiry
                   </button>
@@ -380,7 +381,7 @@ export const CaseRoomModal: React.FC<CaseRoomModalProps> = ({
                   <button
                     onClick={() => handleReviewAction("APPROVE")}
                     disabled={submittingAction}
-                    className="px-5 py-2 text-xs font-bold text-white bg-[#0C83FF] hover:bg-[#0266CC] rounded-xl shadow-sm transition-colors disabled:opacity-50"
+                    className="px-5 py-2 text-xs font-bold text-white bg-[#0C83FF] hover:bg-[#0266CC] rounded-xl shadow-sm transition-colors disabled:opacity-50 text-center"
                   >
                     {submittingAction ? "Signing Audit..." : "Approve & Resolve"}
                   </button>

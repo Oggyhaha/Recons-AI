@@ -448,7 +448,7 @@ export default function ExceptionsPage() {
         /* Structured Ledger Table Box View */
         <div className="fin-card overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full fin-table">
+            <table className="w-full fin-table min-w-[760px]">
               <thead>
                 <tr>
                   <th>Transaction</th>

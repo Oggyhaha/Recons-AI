@@ -253,3 +253,20 @@ export interface WebhookLog {
   formatted_amount: string;
   status: string;
 }
+
+export interface UserProfile {
+  user_id: string;
+  name: string;
+  email: string;
+  role: string;
+  tenant_id: string;
+  tenant_name: string;
+  permissions: string[];
+}
+
+export interface AuthResponse {
+  access_token: string;
+  token_type: string;
+  user: UserProfile;
+  message: string;
+}

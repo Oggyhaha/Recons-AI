@@ -105,7 +105,7 @@ export default function AuditPage() {
       {/* Audit Log Table */}
       <div className="fin-card overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full fin-table">
+          <table className="w-full fin-table min-w-[850px]">
             <thead>
               <tr>
                 <th>Event ID</th>

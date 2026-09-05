@@ -12,7 +12,9 @@ import {
   DisputePackage,
   JournalExport,
   SampleTemplate,
-  WebhookLog
+  WebhookLog,
+  UserProfile,
+  AuthResponse
 } from "./types";
 
 const API_BASE = "/api/v1";
@@ -167,4 +169,28 @@ export const api = {
       total_events: number;
       events: WebhookLog[];
     }>(`${API_BASE}/webhooks/logs?limit=${limit}`),
+
+  // Authentication & RBAC
+  login: (email: string, password: string) =>
+    fetchJson<AuthResponse>(`${API_BASE}/auth/login`, {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+    }),
+  register: (data: { email: string; password: string; name: string; role?: string; tenant_name?: string }) =>
+    fetchJson<AuthResponse>(`${API_BASE}/auth/register`, {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
+  getCurrentUser: (token?: string) =>
+    fetchJson<{ user: UserProfile }>(
+      `${API_BASE}/auth/me`,
+      token ? { headers: { Authorization: `Bearer ${token}` } } : undefined
+    ),
+  switchRole: (role: string, token?: string) =>
+    fetchJson<{ user: UserProfile; message: string }>(`${API_BASE}/auth/switch-role`, {
+      method: "POST",
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+      body: JSON.stringify({ role }),
+    }),
 };
+
